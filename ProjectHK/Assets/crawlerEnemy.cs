@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TO USE CRAWLER ENEMY
+// 1. MAKE CRAWLERS HITBOX TRIGGER
+// 2. SET GROUND TAG ON THE FLOOR
+
 public class crawlerEnemy : enemyParent
 {
     Rigidbody2D rigidbody2;
@@ -30,6 +34,7 @@ public class crawlerEnemy : enemyParent
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        transform.localScale = new Vector2(-(Mathf.Sign(rigidbody2.velocity.x)), transform.localScale.y);
+        if(collision.tag == "ground")
+            transform.localScale = new Vector2(-(Mathf.Sign(rigidbody2.velocity.x)), transform.localScale.y);
     }
 }
