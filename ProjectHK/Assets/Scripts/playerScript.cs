@@ -1,14 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class playerScript : MonoBehaviour
 {
-    public float speed = 0;
+    [SerializeField] private float speed = 1;
+    [SerializeField] private float jumpForce = 1;
 
     private Vector2 amountToMove;
 
-    public Rigidbody2D rb;
+    private Rigidbody2D rb;
 
     public float m_thrust = 1f;
 
@@ -16,37 +18,25 @@ public class playerScript : MonoBehaviour
     public void Move(Vector2 moveAmount)
     {
 
-        float deltaY = moveAmount.y;
-
-        transform.Translate(moveAmount);
     }
 
-    // Start is called before the first frame update
+
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        speed = 0;
-        if (Input.GetKey(KeyCode.A))
-        {
-            speed = -5;
-            rb.AddForce((transform.right * speed) * -1);
-        }
+        //horizontal move
+        Console.WriteLine(Input.GetAxis("Horizontal"));
+        rb.velocity = new Vector2(speed*Input.GetAxis("Horizontal"),rb.velocity.y);
+        if (Input.GetAxis("Jump") > 0)
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
 
-        if (Input.GetKey(KeyCode.D))
-        {
-            speed = 5;
-            rb.AddForce(transform.right * speed);
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-            rb.AddForce(transform.up * m_thrust);
 
-        amountToMove = new Vector2(speed, 0);
-        Move(amountToMove * Time.deltaTime);
 
 
     }
