@@ -8,16 +8,58 @@ public class playerScript : MonoBehaviour
     [SerializeField] private float speed = 1;
     [SerializeField] private float jumpForce = 1;
 
-    private Vector2 amountToMove;
+    //jumping
+    [SerializeField] private Transform groundTransform;
+    [SerializeField] float groundCheckY = 0.2f;         //How far on the Y axis the groundcheck Raycast goes.
+    [SerializeField] float groundCheckX = 1;            //Same as above but for X.
+    [SerializeField] LayerMask groundLayer;
+
+    public static playerScript instance;
 
     private Rigidbody2D rb;
 
-    public float m_thrust = 1f;
+
+    private void Awake()
+    {
+        if(instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
 
     //Methods
-    public void Move(Vector2 moveAmount)
+    public bool Grounded()
     {
+        //this does three small raycasts at the specified positions to see if the player is grounded.
+        if (Physics2D.Raycast(groundTransform.position, Vector2.down, groundCheckY, groundLayer) || Physics2D.Raycast(groundTransform.position + new Vector3(-groundCheckX, 0), Vector2.down, groundCheckY, groundLayer) || Physics2D.Raycast(groundTransform.position + new Vector3(groundCheckX, 0), Vector2.down, groundCheckY, groundLayer))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public void Move()
+    {
+        rb.velocity = new Vector2(speed * Input.GetAxis("Horizontal"), rb.velocity.y);
+    }
+    public void Jump()
+    {
+        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+        }
 
+        if (Input.GetAxis("Jump") > 0 && Grounded())
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        }
+            
     }
 
 
@@ -30,14 +72,8 @@ public class playerScript : MonoBehaviour
 
     void Update()
     {
-        //horizontal move
-        Console.WriteLine(Input.GetAxis("Horizontal"));
-        rb.velocity = new Vector2(speed*Input.GetAxis("Horizontal"),rb.velocity.y);
-        if (Input.GetAxis("Jump") > 0)
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-
-
-
-
+        Move();
+        Jump();
+ 
     }
 }
