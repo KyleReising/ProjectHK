@@ -9,12 +9,11 @@ using UnityEngine;
 public class crawlerEnemy : enemyParent
 {
     Rigidbody2D rigidbody2;
-    BoxCollider2D boxCollider2;
+    [SerializeField] BoxCollider2D boxCollider2;
     
     private void Start()
     {
         rigidbody2 = GetComponent<Rigidbody2D>();
-        boxCollider2 = GetComponent<BoxCollider2D>();
     }
     void Update()
     {

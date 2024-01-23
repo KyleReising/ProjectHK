@@ -10,13 +10,14 @@ public class enemyParent : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject.tag);
         if (collision.gameObject.tag == "Player")
         {
             collision.gameObject.GetComponent<playerScript>().takeDamage(damage);
-            Debug.Log("gamer");
         }
     }
+
+
+
 
     private void Update()
     {
