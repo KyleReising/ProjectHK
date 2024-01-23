@@ -17,7 +17,7 @@ public class playerScript : MonoBehaviour
 
     //attacking
     //yAxis = Input.GetAxisRaw("Vertical")
-    bool attack = false;
+    float attack = 0f;
     float timeBetweenAttack, timeSinceAttack;
     [SerializeField] Transform SideAttackTransform, UpAttackTransform, DownAttackTransform;
     [SerializeField] Vector2 SideAttackArea, UpAttackArea, DownAttackArea;
@@ -26,10 +26,29 @@ public class playerScript : MonoBehaviour
     //unity stuff
     public static playerScript instance;
     private Rigidbody2D rb;
+    private knockBack knockback;
 
     //gameplay values
     [SerializeField] private float health = 100;
 
+
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        knockback = GetComponent<knockBack>();
+    }
+
+    void Update()
+    {
+
+        if (!knockback.IsBeingKnockedBack)
+        {
+            Move();
+            Jump();
+        }
+        Attack();
+    }
 
     private void Awake()
     {
@@ -74,9 +93,10 @@ public class playerScript : MonoBehaviour
             
     }
 
-    public void takeDamage(float dmg)
+    public void takeDamage(float dmg, Vector2 direction)
     {
         health -= dmg;
+        knockback.CallKnockback(direction, Vector2.one, Input.GetAxisRaw("Horizontal"));
     }
 
     private void OnDrawGizmos()
@@ -90,7 +110,8 @@ public class playerScript : MonoBehaviour
     void Attack()
     {
         timeSinceAttack += Time.deltaTime;
-        if (attack && timeSinceAttack >= timeBetweenAttack)
+        attack = Input.GetAxis("Fire1");
+        if (attack != 0 && timeSinceAttack >= timeBetweenAttack)
         {
             timeSinceAttack = 0;
             
@@ -123,16 +144,4 @@ public class playerScript : MonoBehaviour
 
 
 
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
-
-    void Update()
-    {
-        attack = Input.GetMouseButtonDown(0);
-        Move();
-        Jump();
-        Attack();
-    }
 }
