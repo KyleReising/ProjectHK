@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class playerScript : MonoBehaviour
 {
+    //health
     [SerializeField] private float speed = 1;
     [SerializeField] private float jumpForce = 1;
 
@@ -14,9 +15,13 @@ public class playerScript : MonoBehaviour
     [SerializeField] float groundCheckX = 1;            //Same as above but for X.
     [SerializeField] LayerMask groundLayer;
 
+    //unity stuff
     public static playerScript instance;
-
     private Rigidbody2D rb;
+
+    //gameplay values
+    [SerializeField] private float health = 100;
+
 
 
     private void Awake()
@@ -60,6 +65,11 @@ public class playerScript : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
             
+    }
+
+    public void takeDamage(float dmg)
+    {
+        health -= dmg;
     }
 
 
