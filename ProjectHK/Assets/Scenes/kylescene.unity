@@ -610,6 +610,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: crawler
       objectReference: {fileID: 0}
+    - target: {fileID: 6966657155108709681, guid: 7c7b38cc291276f43a9092e532fffd10, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -682,6 +686,10 @@ PrefabInstance:
     - target: {fileID: 1362943430809901231, guid: 07884dcd76f20f84184874275a62e0ba, type: 3}
       propertyPath: m_Name
       value: player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5528775829464699097, guid: 07884dcd76f20f84184874275a62e0ba, type: 3}
+      propertyPath: attackableLayer.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -15,13 +15,20 @@ public class playerScript : MonoBehaviour
     [SerializeField] float groundCheckX = 1;            //Same as above but for X.
     [SerializeField] LayerMask groundLayer;
 
+    //attacking
+    //yAxis = Input.GetAxisRaw("Vertical")
+    bool attack = false;
+    float timeBetweenAttack, timeSinceAttack;
+    [SerializeField] Transform SideAttackTransform, UpAttackTransform, DownAttackTransform;
+    [SerializeField] Vector2 SideAttackArea, UpAttackArea, DownAttackArea;
+    [SerializeField] LayerMask attackableLayer;
+
     //unity stuff
     public static playerScript instance;
     private Rigidbody2D rb;
 
     //gameplay values
     [SerializeField] private float health = 100;
-
 
 
     private void Awake()
@@ -72,6 +79,47 @@ public class playerScript : MonoBehaviour
         health -= dmg;
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(SideAttackTransform.position, SideAttackArea);
+        Gizmos.DrawWireCube(UpAttackTransform.position, UpAttackArea);
+        Gizmos.DrawWireCube(DownAttackTransform.position, DownAttackArea);
+    }
+
+    void Attack()
+    {
+        timeSinceAttack += Time.deltaTime;
+        if (attack && timeSinceAttack >= timeBetweenAttack)
+        {
+            timeSinceAttack = 0;
+            
+            if (Input.GetAxisRaw("Vertical") == 0 || Input.GetAxisRaw("Vertical") < 0 && Grounded())
+            {
+                Hit(SideAttackTransform, SideAttackArea);
+            }
+            else if(Input.GetAxisRaw("Vertical") > 0)
+            {
+                Hit(UpAttackTransform, UpAttackArea);
+            }
+            else if (Input.GetAxisRaw("Vertical") < 0 && !Grounded())
+            {
+                Hit(DownAttackTransform, DownAttackArea);
+            }
+        }
+    }
+
+    private void Hit(Transform _attackTransform, Vector2 _attackArea)
+    {
+        Collider2D[] objectsToHit = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0, attackableLayer);
+        Debug.Log("ObjectShit");
+
+        if (objectsToHit.Length > 0)
+        {
+            Debug.Log("Hit");
+        }
+    }
+
 
 
 
@@ -82,8 +130,9 @@ public class playerScript : MonoBehaviour
 
     void Update()
     {
+        attack = Input.GetMouseButtonDown(0);
         Move();
         Jump();
- 
+        Attack();
     }
 }
