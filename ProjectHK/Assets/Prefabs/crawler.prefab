@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5159286865047804708}
   - component: {fileID: 9110209138705682587}
   - component: {fileID: 1928784980940507583}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: crawler
   m_TagString: enemy
   m_Icon: {fileID: 0}
@@ -176,6 +176,7 @@ MonoBehaviour:
   damage: 1
   speed: 5
   boxCollider2: {fileID: 5159286865047804708}
+  boxCollider3: {fileID: 0}
 --- !u!61 &1928784980940507583
 BoxCollider2D:
   m_ObjectHideFlags: 0
